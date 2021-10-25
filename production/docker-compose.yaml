@@ -12,11 +12,25 @@ services:
     networks:
       - loki
 
-  promtail:
+  promtail1:
     image: grafana/promtail:2.3.0
     volumes:
       - /var/log:/var/log
-    command: -config.file=/etc/promtail/config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /home/griffin/Shared/loki/production/promtail-config.yml:/tmp/config.yml
+    # command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/tmp/config.yml
+    networks:
+      - loki
+  
+  promtail2:
+    image: grafana/promtail:2.3.0
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /home/griffin/Shared/loki/production/promtail-config.yml:/tmp/config.yml
+    # command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/tmp/config.yml
     networks:
       - loki
 
